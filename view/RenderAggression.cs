@@ -1,14 +1,55 @@
 using System;
+using System.IO.Compression;
 
 namespace AnimalBites.view;
 
 public class RenderAggression
 {
-    public void DisplayMostAggressive(string breed)
+    public void DisplayMostAggressive(List<(string Breed, int Count)> breeds)
     {
-        Console.WriteLine($"The most aggressive is: {breed}");
+        if (breeds.Any())
+        {
+            Console.WriteLine("Most aggressive breeds (from most to least):");
+            foreach (var (breed, count) in breeds)
+            {
+                Console.WriteLine($"{breed}: {count} bites");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No data available.");
+        }
     }
-
+    public void DisplayBiteArea(List<(string Area, int Count)> areas)
+    {
+        if (areas.Any())
+        {
+            Console.WriteLine("Where people get bit (from most to least):");
+            foreach (var (area, count) in areas)
+            {
+                Console.WriteLine($"{area}: {count} bites");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No data available.");
+        }
+    }
+    public void DisplayBitesByGender(List<(string Gender, int Count)> genders)
+    {
+        if (genders.Any())
+        {
+            Console.WriteLine("Most aggressive genders (from most to least):");
+            foreach (var (gender, count) in genders)
+            {
+                Console.WriteLine($"{gender}: {count} bites");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No data available.");
+        }
+    }
     public void DisplayLeastAggressive(string breed)
     {
         Console.WriteLine($"The least aggressive is: {breed}");
@@ -24,4 +65,20 @@ public class RenderAggression
             Console.WriteLine("No data available for quarantine");
         }
     }
+    public void DisplayMostBitesByYear(List<dynamic> years)
+    {
+        if (years.Count > 0)
+        {
+            Console.WriteLine("Bites per year (most to least):");
+            foreach (var year in years)
+            {
+                Console.WriteLine($"{year.Year}: {year.Count} bites");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No data available for bite years.");
+        }
+    }
+
 }
