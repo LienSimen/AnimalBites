@@ -3,20 +3,14 @@ using AnimalBites.view;
 
 namespace AnimalBites.controller;
 
-public class DogController
+public class DogController(DataDump dataDump, RenderAggression view)
 {
-    private readonly DataDump _dataDump;
-    private readonly RenderAggression _view;
-
-    public DogController(DataDump dataDump, RenderAggression view)
-    {
-        _dataDump = dataDump; // Inject DataDump instance
-        _view = view;         // Inject RenderAggression instance
-    }
+    private readonly List<BiteData> _bites = dataDump.Bites;
+    private readonly RenderAggression _view = view;
 
     public void ShowMostAggressiveBreed()
     {
-        var mostAggressive = _dataDump.Bites
+        var mostAggressive = _bites
             .Where(bite => !string.IsNullOrWhiteSpace(bite.Breed))
             .GroupBy(bite => bite.Breed)
             .OrderByDescending(group => group.Count())
@@ -28,7 +22,7 @@ public class DogController
 
     public void ShowLeastAggressiveBreed()
     {
-        var leastAggressive = _dataDump.Bites
+        var leastAggressive = _bites
             .GroupBy(bite => bite.Breed)
             .OrderBy(group => group.Count())
             .FirstOrDefault();
@@ -39,18 +33,13 @@ public class DogController
 
     public void LongestQuarantine()
     {
-        var longestQuarantine = _dataDump.Bites
-            .Where(bite => bite.Quarantine_Date.HasValue && bite.Release_Date.HasValue) // Ensure both dates exist
+        var longestQuarantine = _bites
+            .Where(bite => bite.Quarantine_Date.HasValue && bite.Release_Date.HasValue)
             .OrderByDescending(bite => bite.DaysInQuarantine)
             .FirstOrDefault();
 
-        if (longestQuarantine != null)
-        {
-            _view.DisplayLongestQuarantine(longestQuarantine.DaysInQuarantine);
-        }
-        else
-        {
-            _view.DisplayLongestQuarantine(null);
-        }
+        _view.DisplayLongestQuarantine(longestQuarantine?.DaysInQuarantine);
     }
+
+    
 }
