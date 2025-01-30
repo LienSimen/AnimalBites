@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel;
 using AnimalBites.controller;
+using System.Security.Cryptography;
 
 namespace AnimalBites.App;
 
@@ -20,7 +22,11 @@ public class BiteDataApp(DogController dogController)
             Console.WriteLine("Press 4 to see most bites by year");
             Console.WriteLine("Press 5 to see bites by gender");
             Console.WriteLine("Press 6 to see bites by area");
+            Console.WriteLine("Press 7 to see bites by zip");
+            Console.WriteLine("Press 8 to see bites by species");
+            Console.WriteLine("Press 9 to make your own query");
             Console.WriteLine("Press q to exit");
+
             var input = Console.ReadLine();
             switch(input)
             {
@@ -41,6 +47,35 @@ public class BiteDataApp(DogController dogController)
                     break;
                 case "6":
                     _dogController.BitesByArea();
+                    break;
+                case "7":
+                    _dogController.BitesByZip();
+                    break;
+                case "8":
+                    _dogController.BitesBySpecies();
+                    break;
+                case "9":
+                    var (query, quarantineInput, breedInput) = _dogController.QueryBuilder();
+                    Console.WriteLine("Here comes the result from your query");
+                    Console.WriteLine($"We found {query.Count()} results");
+                    
+                    foreach (var bites in query)
+                    {
+                        //mega awesome
+                        var isDog = bites.Species.ToLower() == "dog"
+                            ? $"Bite from a {bites.Breed}"
+                            : $"Bite from a {bites.Species}";
+
+                        var bitesDate = bites.BiteDate.HasValue
+                            ? $"on the {bites.BiteDate:d}."
+                            : "";
+
+                        var quarantined = quarantineInput?.ToLower() == "y" && bites.DaysInQuarantine > 0
+                            ? $"And they were in quarantine for {bites.DaysInQuarantine} days."
+                            : "";
+
+                        Console.WriteLine($"{isDog} is a {bites.Gender?.ToLower()}, and they bit the {bites.BiteArea}, {bitesDate} {quarantined}");
+                    }
                     break;
                 case "q":
                     isRunning = false;
