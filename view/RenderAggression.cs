@@ -20,6 +20,12 @@ public class RenderAggression
             Console.WriteLine("No data available.");
         }
     }
+
+    public void DisplayLeastAggressive(string breed)
+    {
+        Console.WriteLine($"The least aggressive is: {breed}");
+    }
+    
     public void DisplayBiteArea(List<(string Area, int Count)> areas)
     {
         if (areas.Any())
@@ -28,6 +34,36 @@ public class RenderAggression
             foreach (var (area, count) in areas)
             {
                 Console.WriteLine($"{area}: {count} bites");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No data available.");
+        }
+    }
+    public void DisplayBitesBySpecies(List<(string Area, int Count)> species)
+    {
+        if (species.Any())
+        {
+            Console.WriteLine("Bites by species:");
+            foreach (var (specie, count) in species)
+            {
+                Console.WriteLine($"{specie}: {count} bites");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No data available.");
+        }
+    }
+    public void DisplayBiteZip(List<(string Area, int Count)> zips)
+    {
+        if (zips.Any())
+        {
+            Console.WriteLine("What zip area people get bit (from most to least):");
+            foreach (var (zip, count) in zips)
+            {
+                Console.WriteLine($"{zip}: {count} bites");
             }
         }
         else
@@ -50,10 +86,7 @@ public class RenderAggression
             Console.WriteLine("No data available.");
         }
     }
-    public void DisplayLeastAggressive(string breed)
-    {
-        Console.WriteLine($"The least aggressive is: {breed}");
-    }
+
     public void DisplayLongestQuarantine(int? days)
     {
         if (days.HasValue)

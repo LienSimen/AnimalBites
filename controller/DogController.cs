@@ -19,6 +19,18 @@ public class DogController(DataDump dataDump, RenderAggression view)
 
         _view.DisplayMostAggressive(mostAggressive);
     }
+    public void BitesBySpecies()
+    {
+        var bitesBySpecies = _bites
+            .Where(b => b.Species.Length > 0)
+            .GroupBy(bite => bite.Species)
+            .OrderByDescending(group => group.Count())
+            .Select(group => (group.Key, group.Count()))
+            .ToList();
+
+        _view.DisplayBitesBySpecies(bitesBySpecies);
+    }
+
     public void ShowLeastAggressiveBreed()
     {
         var leastAggressive = _bites
@@ -51,6 +63,18 @@ public class DogController(DataDump dataDump, RenderAggression view)
         .ToList();
         _view.DisplayBiteArea(bitesByAreas);
     }
+
+    public void BitesByZip()
+    {
+        var bitesByZip = _bites
+        .Where(bite => bite.VictimZip.Length > 0)
+        .GroupBy(bite => bite.VictimZip)
+        .OrderByDescending(group => group.Count())
+        .Select(group => (Area: group.Key, Count: group.Count()))
+        .ToList();
+        _view.DisplayBiteZip(bitesByZip);
+    }
+
     public void LongestQuarantine()
     {
         var longestQuarantine = _bites
@@ -59,6 +83,7 @@ public class DogController(DataDump dataDump, RenderAggression view)
             .FirstOrDefault();
         _view.DisplayLongestQuarantine(longestQuarantine?.DaysInQuarantine);
     }
+
     public void MostBitesByYear()
     {
         var bitesByYear = _bites
@@ -69,6 +94,53 @@ public class DogController(DataDump dataDump, RenderAggression view)
             .ToList<dynamic>();
 
         _view.DisplayMostBitesByYear(bitesByYear);
+    }
+
+    //mega cool
+    public (IQueryable<BiteData>, string?, string?) QueryBuilder()
+    {
+        var queryStart = _bites.AsQueryable();
+        
+        Console.WriteLine("Type a Species or leave blank");
+        string? speciesInput = Console.ReadLine();
+        if (!string.IsNullOrEmpty(speciesInput))
+        {
+            queryStart = queryStart.Where(b => string.Equals(b.Species, speciesInput, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        Console.WriteLine("Type a breed or leave blank");
+        string? breedInput = Console.ReadLine();
+        if (!string.IsNullOrEmpty(breedInput))
+        {
+            queryStart = queryStart.Where(b => string.Equals(b.Breed, breedInput, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        Console.WriteLine("Type a gender or leave blank");
+        string? genderInput = Console.ReadLine();
+        if (!string.IsNullOrEmpty(genderInput))
+        {
+            queryStart = queryStart.Where(b => string.Equals(b.Gender, genderInput, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        Console.WriteLine("Type a color or leave blank");
+        string? colorInput = Console.ReadLine();
+        if (!string.IsNullOrEmpty(colorInput))
+        {
+            queryStart = queryStart.Where(b => string.Equals(b.Color, colorInput, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        Console.WriteLine("Quarantined? Y/n");
+        string? quarantineInput = Console.ReadLine();
+        if (!string.IsNullOrEmpty(quarantineInput))
+        {
+            if (quarantineInput.ToLower() == "y")
+            {
+                queryStart = queryStart.Where(b => b.DaysInQuarantine > 0);
+            }
+        }
+
+
+        return (queryStart, quarantineInput, breedInput);
     }
 
 }
