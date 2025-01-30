@@ -20,13 +20,14 @@ public class BiteData
     {
         string[] values = csv.Split(',');
 
+        // ?? didnt work here. We needed to check for null, empty string and white space not just null.
         BiteDate = DateTime.TryParse(values[0], out var biteDate) ? biteDate : null;
-        Species = values[1] ?? "Unknown Species";
-        Breed = values[2] ?? "Unknown Breed";
-        Gender = values[3] ?? "Unknown";
-        Color = values[4] ?? "Unknown";
-        VictimZip = values[7] ?? "Unknown";
-        BiteArea = values[9] ?? "Unknown";
+        Species = string.IsNullOrWhiteSpace(values[1]) ? "Unknown Species" : values[1];
+        Breed = string.IsNullOrWhiteSpace(values[2]) ? "Unknown Breed" : values[2];
+        Gender = string.IsNullOrWhiteSpace(values[3]) ? "Unknown" : values[3];
+        Color = string.IsNullOrWhiteSpace(values[4]) ? "Unknown" : values[4];
+        VictimZip = string.IsNullOrWhiteSpace(values[7]) ? "Unknown" : values[7];
+        BiteArea = string.IsNullOrWhiteSpace(values[9]) ? "Unknown" : values[9];
         QuarantineDate = DateTime.TryParse(values[10], out var quarantineDate) ? quarantineDate : null;
         ReleaseDate = DateTime.TryParse(values[13], out var releaseDate) ? releaseDate : null;
     }
