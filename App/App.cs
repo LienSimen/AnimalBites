@@ -61,7 +61,7 @@ public class BiteDataApp(DogController dogController)
                     
                     foreach (var bites in query)
                     {
-                        //mega awesome
+                        //mega awesome- despite no new concepts it didnt dawn on me whats possible with strings
                         var isDog = bites.Species.ToLower() == "dog"
                             ? $"Bite from a {bites.Breed}"
                             : $"Bite from a {bites.Species}";
@@ -73,7 +73,7 @@ public class BiteDataApp(DogController dogController)
                         var quarantined = quarantineInput?.ToLower() == "y" && bites.DaysInQuarantine > 0
                             ? $"And they were in quarantine for {bites.DaysInQuarantine} days."
                             : "";
-
+                        // rip readability
                         Console.WriteLine($"{isDog} is a {bites.Gender?.ToLower()}, and they bit the {bites.BiteArea}, {bitesDate} {quarantined}");
                     }
                     break;
