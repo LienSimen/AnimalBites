@@ -25,6 +25,7 @@ public class BiteDataApp(DogController dogController)
             Console.WriteLine("Press 7 to see bites by zip");
             Console.WriteLine("Press 8 to see bites by species");
             Console.WriteLine("Press 9 to make your own query");
+            Console.WriteLine("Press 10 to see colors");
             Console.WriteLine("Press q to exit");
 
             var input = Console.ReadLine();
@@ -76,6 +77,9 @@ public class BiteDataApp(DogController dogController)
                         // rip readability
                         Console.WriteLine($"{isDog} is a {bites.Gender?.ToLower()}, and they bit the {bites.BiteArea}, {bitesDate} {quarantined}");
                     }
+                    break;
+                case "10":
+                    _dogController.BitesByColor();
                     break;
                 case "q":
                     isRunning = false;

@@ -63,6 +63,17 @@ public class DogController(DataDump dataDump, RenderAggression view)
         .ToList();
         _view.DisplayBiteArea(bitesByAreas);
     }
+    public void BitesByColor()
+    {
+        var bitesByColor = _bites
+            .Where(bite => !string.IsNullOrWhiteSpace(bite.Color))
+            .GroupBy(bite => bite.Color)
+            .OrderByDescending(group => group.Count())
+            .Select(group => (Color: group.Key, Count: group.Count()))
+            .ToList();
+
+        _view.DisplayColor(bitesByColor);
+    }
 
     public void BitesByZip()
     {
