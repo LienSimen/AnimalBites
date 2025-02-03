@@ -23,17 +23,11 @@ public class BiteDataApp(DogController dogController)
             Console.WriteLine("Press 5 to see bites by gender");
             Console.WriteLine("Press 6 to see bites by area");
             Console.WriteLine("Press 7 to see bites by zip");
-<<<<<<< HEAD
             Console.WriteLine("Press 8 to see bites by County");
             Console.WriteLine("Press 9 to see bites by City");
             Console.WriteLine("Press 10 to see bites by species");
             Console.WriteLine("Press 11 to make your own query");
             Console.WriteLine("Press 12 for advanced query");
-=======
-            Console.WriteLine("Press 8 to see bites by species");
-            Console.WriteLine("Press 9 to make your own query");
-            Console.WriteLine("Press 10 to see colors");
->>>>>>> 2961815229a3452bc18f7aa16528c3ea5be7001e
             Console.WriteLine("Press q to exit");
 
             var input = Console.ReadLine();
@@ -92,7 +86,6 @@ public class BiteDataApp(DogController dogController)
                         Console.WriteLine($"{isDog} is a {bites.Gender?.ToLower()}, and they bit the {bites.BiteArea}, {bitesDate} {quarantined}");
                     }
                     break;
-<<<<<<< HEAD
                 case "12":
                     var results = _dogController.RunAdvancedQuery(); // ✅ Run query once
 
@@ -113,11 +106,6 @@ public class BiteDataApp(DogController dogController)
                     }
                     break;
 
-=======
-                case "10":
-                    _dogController.BitesByColor();
-                    break;
->>>>>>> 2961815229a3452bc18f7aa16528c3ea5be7001e
                 case "q":
                     isRunning = false;
                     break;

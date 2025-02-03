@@ -19,13 +19,8 @@ public class BiteData
     public int DaysInQuarantine => (ReleaseDate.HasValue && QuarantineDate.HasValue)
         ? (ReleaseDate.Value - QuarantineDate.Value).Days
         : 0;
-<<<<<<< HEAD
 
     public BiteData(string csv, Dictionary<string, GeoData> geoLookup)
-=======
-    
-    public BiteData(string csv)
->>>>>>> 2961815229a3452bc18f7aa16528c3ea5be7001e
     {
         string[] values = csv.Split(',');
 
@@ -40,6 +35,7 @@ public class BiteData
         QuarantineDate = DateTime.TryParse(values[10], out var quarantineDate) ? quarantineDate : null;
         ReleaseDate = DateTime.TryParse(values[13], out var releaseDate) ? releaseDate : null;
 
+        // Ensure geoLookup is properly used
         if (geoLookup.TryGetValue(VictimZip, out var geoData))
         {
             State = geoData.State;
