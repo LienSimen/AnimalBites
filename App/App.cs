@@ -23,11 +23,17 @@ public class BiteDataApp(DogController dogController)
             Console.WriteLine("Press 5 to see bites by gender");
             Console.WriteLine("Press 6 to see bites by area");
             Console.WriteLine("Press 7 to see bites by zip");
+<<<<<<< HEAD
             Console.WriteLine("Press 8 to see bites by County");
             Console.WriteLine("Press 9 to see bites by City");
             Console.WriteLine("Press 10 to see bites by species");
             Console.WriteLine("Press 11 to make your own query");
             Console.WriteLine("Press 12 for advanced query");
+=======
+            Console.WriteLine("Press 8 to see bites by species");
+            Console.WriteLine("Press 9 to make your own query");
+            Console.WriteLine("Press 10 to see colors");
+>>>>>>> 2961815229a3452bc18f7aa16528c3ea5be7001e
             Console.WriteLine("Press q to exit");
 
             var input = Console.ReadLine();
@@ -65,12 +71,12 @@ public class BiteDataApp(DogController dogController)
                     break;
                 case "11":
                     var (query, quarantineInput, breedInput) = _dogController.QueryBuilder();
-                    Console.WriteLine("Here comes the result from your query");
+                    Console.WriteLine("Here comes the result from your query"); 
                     Console.WriteLine($"We found {query.Count()} results");
                     
                     foreach (var bites in query)
                     {
-                        //mega awesome
+                        //mega awesome- despite no new concepts it didnt dawn on me whats possible with strings
                         var isDog = bites.Species.ToLower() == "dog"
                             ? $"Bite from a {bites.Breed}"
                             : $"Bite from a {bites.Species}";
@@ -82,10 +88,11 @@ public class BiteDataApp(DogController dogController)
                         var quarantined = quarantineInput?.ToLower() == "y" && bites.DaysInQuarantine > 0
                             ? $"And they were in quarantine for {bites.DaysInQuarantine} days."
                             : "";
-
+                        // rip readability
                         Console.WriteLine($"{isDog} is a {bites.Gender?.ToLower()}, and they bit the {bites.BiteArea}, {bitesDate} {quarantined}");
                     }
                     break;
+<<<<<<< HEAD
                 case "12":
                     var results = _dogController.RunAdvancedQuery(); // ✅ Run query once
 
@@ -106,6 +113,11 @@ public class BiteDataApp(DogController dogController)
                     }
                     break;
 
+=======
+                case "10":
+                    _dogController.BitesByColor();
+                    break;
+>>>>>>> 2961815229a3452bc18f7aa16528c3ea5be7001e
                 case "q":
                     isRunning = false;
                     break;

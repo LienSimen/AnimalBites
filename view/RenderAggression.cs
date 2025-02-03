@@ -42,6 +42,23 @@ public class RenderAggression
             Console.WriteLine("No data available.");
         }
     }
+
+    public void DisplayColor(List<(string Color, int Count)> colors)
+    {
+        if (colors.Any())
+        {
+            Console.WriteLine("Colors of animals that bite.");
+            foreach (var (color, count) in colors)
+            {
+                Console.WriteLine($"{color}, {count} times.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No data available.");
+        }
+    }
+
     public void DisplayBitesBySpecies(List<(string Area, int Count)> species)
     {
         if (species.Any())
