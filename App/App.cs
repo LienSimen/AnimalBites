@@ -23,8 +23,11 @@ public class BiteDataApp(DogController dogController)
             Console.WriteLine("Press 5 to see bites by gender");
             Console.WriteLine("Press 6 to see bites by area");
             Console.WriteLine("Press 7 to see bites by zip");
-            Console.WriteLine("Press 8 to see bites by species");
-            Console.WriteLine("Press 9 to make your own query");
+            Console.WriteLine("Press 8 to see bites by County");
+            Console.WriteLine("Press 9 to see bites by City");
+            Console.WriteLine("Press 10 to see bites by species");
+            Console.WriteLine("Press 11 to make your own query");
+            Console.WriteLine("Press 12 for advanced query");
             Console.WriteLine("Press q to exit");
 
             var input = Console.ReadLine();
@@ -52,9 +55,15 @@ public class BiteDataApp(DogController dogController)
                     _dogController.BitesByZip();
                     break;
                 case "8":
-                    _dogController.BitesBySpecies();
+                    _dogController.BitesByCounty();
                     break;
                 case "9":
+                    _dogController.BitesByCity();
+                    break;
+                case "10":
+                    _dogController.BitesBySpecies();
+                    break;
+                case "11":
                     var (query, quarantineInput, breedInput) = _dogController.QueryBuilder();
                     Console.WriteLine("Here comes the result from your query");
                     Console.WriteLine($"We found {query.Count()} results");
@@ -77,6 +86,26 @@ public class BiteDataApp(DogController dogController)
                         Console.WriteLine($"{isDog} is a {bites.Gender?.ToLower()}, and they bit the {bites.BiteArea}, {bitesDate} {quarantined}");
                     }
                     break;
+                case "12":
+                    var results = _dogController.RunAdvancedQuery(); // ✅ Run query once
+
+                    if (!results.Any())
+                    {
+                        Console.WriteLine("No results found.");
+                        break;
+                    }
+
+                    _dogController.DisplayQueryResults(results); // ✅ Directly display results
+
+                    Console.Write("\n💾 Do you want to save these results to a CSV file? (Y/N): ");
+                    string? saveToCsv = Console.ReadLine();
+
+                    if (!string.IsNullOrWhiteSpace(saveToCsv) && saveToCsv.Equals("Y", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _dogController.ExportQueryToCSV(results); // ✅ Pass stored results
+                    }
+                    break;
+
                 case "q":
                     isRunning = false;
                     break;

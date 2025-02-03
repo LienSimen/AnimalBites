@@ -75,6 +75,30 @@ public class DogController(DataDump dataDump, RenderAggression view)
         _view.DisplayBiteZip(bitesByZip);
     }
 
+    public void BitesByCity()
+    {
+        var bitesByCity = _bites
+            .Where(b => b.City != "Unknown")
+            .GroupBy(b => b.City)
+            .Select(g => (g.Key, g.Count()))
+            .OrderByDescending(g => g.Item2)
+            .ToList();
+
+        _view.DisplayBitesByCity(bitesByCity);
+    }
+
+    public void BitesByCounty()
+    {
+        var bitesByCounty = _bites
+            .Where(b => b.County != "Unknown")
+            .GroupBy(b => b.County)
+            .Select(g => (g.Key, g.Count()))
+            .OrderByDescending(g => g.Item2)
+            .ToList();
+
+        _view.DisplayBitesByCounty(bitesByCounty);
+    }
+
     public void LongestQuarantine()
     {
         var longestQuarantine = _bites
@@ -142,5 +166,124 @@ public class DogController(DataDump dataDump, RenderAggression view)
 
         return (queryStart, quarantineInput, breedInput);
     }
+    public void AdvancedQuery()
+    {
+        var results = RunAdvancedQuery();
 
+        if (!results.Any())
+        {
+            Console.WriteLine("No results found.");
+            return;
+        }
+
+        _view.DisplayQueryResults(results);
+    }
+
+    public List<BiteData> RunAdvancedQuery()
+    {
+        var queryStart = _bites.AsQueryable();
+
+        Console.WriteLine("\n🔍Advanced Query: Define filters or leave blank");
+
+        Console.Write("State: ");
+        string? stateInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(stateInput))
+        {
+            queryStart = queryStart.Where(b => b.State.Equals(stateInput, StringComparison.OrdinalIgnoreCase));
+        }
+
+        Console.Write("County: ");
+        string? countyInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(countyInput))
+        {
+            queryStart = queryStart.Where(b => b.County.Equals(countyInput, StringComparison.OrdinalIgnoreCase));
+        }
+
+        Console.Write("City: ");
+        string? cityInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(cityInput))
+        {
+            queryStart = queryStart.Where(b => b.City.Equals(cityInput, StringComparison.OrdinalIgnoreCase));
+        }
+
+        Console.Write("ZIP Code: ");
+        string? zipInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(zipInput))
+        {
+            queryStart = queryStart.Where(b => b.VictimZip.Equals(zipInput));
+        }
+
+        Console.Write("Breed: ");
+        string? breedInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(breedInput))
+        {
+            queryStart = queryStart.Where(b => b.Breed.Equals(breedInput, StringComparison.OrdinalIgnoreCase));
+        }
+
+        Console.Write("Year (e.g., 2023): ");
+        string? yearInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(yearInput) && int.TryParse(yearInput, out int year))
+        {
+            queryStart = queryStart.Where(b => b.BiteDate.HasValue && b.BiteDate.Value.Year == year);
+        }
+
+        Console.Write("Sort by (Breed, City, County, Year, Zip, Species, BitesCount): ");
+        string? sortInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(sortInput))
+        {
+            switch (sortInput.ToLower())
+            {
+                case "breed":
+                    queryStart = queryStart.OrderBy(b => b.Breed);
+                    break;
+                case "city":
+                    queryStart = queryStart.OrderBy(b => b.City);
+                    break;
+                case "county":
+                    queryStart = queryStart.OrderBy(b => b.County);
+                    break;
+                case "year":
+                    queryStart = queryStart.OrderBy(b => b.BiteDate.Value.Year);
+                    break;
+                case "zip":
+                    queryStart = queryStart.OrderBy(b => b.VictimZip);
+                    break;
+                case "species":
+                    queryStart = queryStart.OrderBy(b => b.Species);
+                    break;
+                case "bitescount":
+                    queryStart = queryStart.GroupBy(b => b.Breed)
+                                           .Select(g => g.First())
+                                           .OrderByDescending(b => _bites.Count(bite => bite.Breed == b.Breed));
+                    break;
+            }
+        }
+
+        var results = queryStart.ToList();
+        return results;
+    }
+    public void DisplayQueryResults(List<BiteData> results)
+    {
+        _view.DisplayQueryResults(results);
+    }
+    public void ExportQueryToCSV(List<BiteData> results)
+    {
+        if (!results.Any())
+        {
+            Console.WriteLine("No data found to export.");
+            return;
+        }
+
+        string filePath = "query_results.csv";
+        using (StreamWriter writer = new StreamWriter(filePath))
+        {
+            writer.WriteLine("BiteDate,Species,Breed,Gender,Color,BiteArea,VictimZip,City,County,State,QuarantineDays");
+            foreach (var bite in results)
+            {
+                writer.WriteLine($"{bite.BiteDate},{bite.Species},{bite.Breed},{bite.Gender},{bite.Color},{bite.BiteArea},{bite.VictimZip},{bite.City},{bite.County},{bite.State},{bite.DaysInQuarantine}");
+            }
+        }
+
+        Console.WriteLine($"✅ Query results exported to {filePath}");
+    }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IO.Compression;
+using AnimalBites.model;
 
 namespace AnimalBites.view;
 
@@ -25,7 +26,7 @@ public class RenderAggression
     {
         Console.WriteLine($"The least aggressive is: {breed}");
     }
-    
+
     public void DisplayBiteArea(List<(string Area, int Count)> areas)
     {
         if (areas.Any())
@@ -56,14 +57,46 @@ public class RenderAggression
             Console.WriteLine("No data available.");
         }
     }
-    public void DisplayBiteZip(List<(string Area, int Count)> zips)
+    public void DisplayBiteZip(List<(string Zip, int Count)> zips)
     {
         if (zips.Any())
         {
-            Console.WriteLine("What zip area people get bit (from most to least):");
+            Console.WriteLine("Bites by ZIP code (from most to least):");
             foreach (var (zip, count) in zips)
             {
                 Console.WriteLine($"{zip}: {count} bites");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No data available.");
+        }
+    }
+
+    public void DisplayBitesByCity(List<(string City, int Count)> cities)
+    {
+        if (cities.Any())
+        {
+            Console.WriteLine("Bites by city (from most to least):");
+            foreach (var (city, count) in cities)
+            {
+                Console.WriteLine($"{city}: {count} bites");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No data available.");
+        }
+    }
+
+    public void DisplayBitesByCounty(List<(string County, int Count)> counties)
+    {
+        if (counties.Any())
+        {
+            Console.WriteLine("Bites by county (from most to least):");
+            foreach (var (county, count) in counties)
+            {
+                Console.WriteLine($"{county}: {count} bites");
             }
         }
         else
@@ -98,6 +131,8 @@ public class RenderAggression
             Console.WriteLine("No data available for quarantine");
         }
     }
+
+
     public void DisplayMostBitesByYear(List<dynamic> years)
     {
         if (years.Count > 0)
@@ -114,4 +149,28 @@ public class RenderAggression
         }
     }
 
+    public void DisplayQueryResults(List<BiteData> results)
+    {
+        if (!results.Any())
+        {
+            Console.WriteLine("No results found.");
+            return;
+        }
+
+        Console.WriteLine("\n🔍 Query Results:");
+
+        foreach (var bite in results)
+        {
+            string speciesInfo = bite.Species.ToLower() == "dog"
+                ? $"Bite from a {bite.Breed}"
+                : $"Bite from a {bite.Species}";
+
+            string biteDate = bite.BiteDate.HasValue ? $"on {bite.BiteDate:d}" : "Date Unknown";
+            string quarantined = bite.DaysInQuarantine > 0 ? $"Quarantined for {bite.DaysInQuarantine} days." : "";
+
+            Console.WriteLine($"📍 City: {bite.City}, County: {bite.County}, State: {bite.State}");
+            Console.WriteLine($"🐾 {speciesInfo}, {bite.Gender?.ToLower()} - Bit the {bite.BiteArea}, {biteDate} {quarantined}");
+            Console.WriteLine("----------------------------------------------------");
+        }
+    }
 }
