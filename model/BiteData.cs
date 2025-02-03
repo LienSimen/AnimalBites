@@ -15,7 +15,7 @@ public class BiteData
     public int DaysInQuarantine => (ReleaseDate.HasValue && QuarantineDate.HasValue)
         ? (ReleaseDate.Value - QuarantineDate.Value).Days
         : 0;
-
+    
     public BiteData(string csv)
     {
         string[] values = csv.Split(',');

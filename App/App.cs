@@ -57,7 +57,7 @@ public class BiteDataApp(DogController dogController)
                     break;
                 case "9":
                     var (query, quarantineInput, breedInput) = _dogController.QueryBuilder();
-                    Console.WriteLine("Here comes the result from your query");
+                    Console.WriteLine("Here comes the result from your query"); 
                     Console.WriteLine($"We found {query.Count()} results");
                     
                     foreach (var bites in query)
