@@ -87,7 +87,7 @@ public class BiteDataApp(DogController dogController)
                     }
                     break;
                 case "12":
-                    var results = _dogController.RunAdvancedQuery(); // ✅ Run query once
+                    var results = _dogController.RunAdvancedQuery();
 
                     if (!results.Any())
                     {
@@ -95,14 +95,14 @@ public class BiteDataApp(DogController dogController)
                         break;
                     }
 
-                    _dogController.DisplayQueryResults(results); // ✅ Directly display results
+                    _dogController.DisplayQueryResults(results);
 
                     Console.Write("\n💾 Do you want to save these results to a CSV file? (Y/N): ");
                     string? saveToCsv = Console.ReadLine();
 
                     if (!string.IsNullOrWhiteSpace(saveToCsv) && saveToCsv.Equals("Y", StringComparison.OrdinalIgnoreCase))
                     {
-                        _dogController.ExportQueryToCSV(results); // ✅ Pass stored results
+                        _dogController.ExportQueryToCSV(results);
                     }
                     break;
 

@@ -231,7 +231,7 @@ public class DogController(DataDump dataDump, RenderAggression view)
             queryStart = queryStart.Where(b => b.Breed.Equals(breedInput, StringComparison.OrdinalIgnoreCase));
         }
 
-        Console.Write("Year (e.g., 2023): ");
+        Console.Write("Year (e.g., 2011): ");
         string? yearInput = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(yearInput) && int.TryParse(yearInput, out int year))
         {
