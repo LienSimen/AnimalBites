@@ -1,15 +1,12 @@
 using System;
 using System.ComponentModel;
 using AnimalBites.controller;
-using System.Security.Cryptography;
-
 namespace AnimalBites.App;
 
 public class BiteDataApp(DogController dogController)
 {
     private readonly DogController _dogController = dogController;
     private bool isRunning = true;
-
     public void Run()
     {
         while(isRunning)

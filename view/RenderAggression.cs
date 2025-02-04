@@ -1,5 +1,3 @@
-using System;
-using System.IO.Compression;
 using AnimalBites.model;
 
 namespace AnimalBites.view;

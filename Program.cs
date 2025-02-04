@@ -4,7 +4,6 @@ using AnimalBites.model;
 using AnimalBites.App;
 
 namespace AnimalBites;
-
 class Program
 {
     static void Main(string[] args)
